@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Organizador — Feriados Públicos</title>
+  </head>
+  <body>
+    <h1>Feriados Públicos (Nager.Date)</h1>
+    <p>Escolha país e ano para ver os feriados.</p>
+    <label>Ano: <input id="year" value="2024" /></label>
+    <label>País: <input id="country" value="BR" /></label>
+    <button id="btn">Buscar</button>
+    <div id="result"></div>
+    <script>
+      document.getElementById('btn').addEventListener('click', async ()=>{
+        const y = document.getElementById('year').value;
+        const c = document.getElementById('country').value.toUpperCase();
+        const res = document.getElementById('result');
+        res.textContent = 'Buscando...';
+        try{
+          const r = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${y}/${c}`);
+          if(!r.ok) throw new Error('Erro ' + r.status);
+          const data = await r.json();
+          res.innerHTML = '<ul>' + data.slice(0,50).map(d=>`<li>${d.date} — ${d.localName} (${d.name})</li>`).join('') + '</ul>';
+        }catch(e){ res.textContent = 'Erro: '+e.message }
+      })
+      // busca inicial
+      document.getElementById('btn').click();
+    </script>
+  </body>
+</html>
