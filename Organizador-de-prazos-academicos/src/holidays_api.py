@@ -8,11 +8,13 @@ def get_public_holidays(year: int, country_code: str):
     Exemplo de resposta: lista de objetos com keys 'date', 'localName', 'name', etc.
     """
     url = f"{BASE_URL}/{year}/{country_code}"
-    resp = requests.get(url, timeout=10)
-    if resp.status_code != 200:
-        raise RuntimeError(f"API retornou status {resp.status_code}")
-    data = resp.json()
-    return data
+    try:
+        resp = requests.get(url, timeout=10)
+        resp.raise_for_status()
+    except requests.RequestException as exc:
+        raise RuntimeError(f"Falha ao acessar a API de feriados: {exc}") from exc
+
+    return resp.json()
 
 if __name__ == '__main__':
     # exemplo rápido

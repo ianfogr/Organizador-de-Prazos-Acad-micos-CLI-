@@ -2,6 +2,10 @@
 
 Um aplicativo de linha de comando simples para organizar prazos acadêmicos, como entregas de trabalhos, provas e outras atividades escolares.
 
+> Link público do deploy GitHub Pages: _atualize após publicar_
+>
+> Página estática pronta em `docs/index.html` para deploy via GitHub Pages.
+
 ## Funcionalidades
 
 - Adicionar novas entregas com nome e prazo (formato DD/MM)
@@ -49,9 +53,25 @@ python -m pytest
 Para a atividade da Entrega Intermediária foram adicionadas:
 
 - Integração com a API pública Nager.Date para consultar feriados públicos (`src/holidays_api.py`).
+- A CLI pergunta ano e código ISO do país e exibe feriados oficiais retornados pela API.
 - Um teste de integração em `Organizador-de-prazos-academicos/tests/test_integration_holidays.py` que valida o fluxo da API.
 - Uma página estática em `docs/index.html` que consulta a mesma API (pronta para deploy em GitHub Pages).
 - Workflows em `.github/workflows/` para CI (rodar testes) e deploy de `docs/` para GitHub Pages.
+
+### Sobre a API pública
+
+O projeto consome a API REST gratuita do Nager.Date, que fornece feriados nacionais por país e ano. A chamada utilizada é:
+
+```http
+GET https://date.nager.at/api/v3/PublicHolidays/{ano}/{codigo_pais}
+```
+
+Exemplo de uso na aplicação:
+
+- `ano`: `2024`
+- `codigo_pais`: `BR`
+
+O retorno inclui campos como `date`, `localName` e `name`, que são exibidos na interface CLI.
 
 Como rodar a integração localmente:
 
