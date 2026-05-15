@@ -41,8 +41,41 @@ Siga o menu interativo para adicionar, listar, editar ou remover entregas.
 
 Para executar os testes:
 ```bash
-python -m pytest Organizador-de-prazos-academicos/teste_core.py
+python -m pytest
 ```
+
+## Entrega Intermediária (Adaptações)
+
+Para a atividade da Entrega Intermediária foram adicionadas:
+
+- Integração com a API pública Nager.Date para consultar feriados públicos (`src/holidays_api.py`).
+- Um teste de integração em `Organizador-de-prazos-academicos/tests/test_integration_holidays.py` que valida o fluxo da API.
+- Uma página estática em `docs/index.html` que consulta a mesma API (pronta para deploy em GitHub Pages).
+- Workflows em `.github/workflows/` para CI (rodar testes) e deploy de `docs/` para GitHub Pages.
+
+Como rodar a integração localmente:
+
+1. Instale dependências:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Rode os testes (inclui o teste de integração):
+
+```bash
+pytest
+```
+
+3. Execute o CLI e escolha a opção "Listar Feriados Públicos":
+
+```bash
+python src/main.py
+```
+
+4. Para publicar um site com a listagem de feriados, ative o workflow `pages.yml` ao publicar o branch `main` no GitHub; o conteúdo de `docs/` será publicado no GitHub Pages.
+
+Atualize este README com o link público após o deploy.
 
 ## Estrutura do Projeto
 

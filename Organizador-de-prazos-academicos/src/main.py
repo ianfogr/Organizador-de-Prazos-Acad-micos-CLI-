@@ -90,6 +90,7 @@ def menu():
     print("3. Remover Entrega")
     print("4. Editar Entrega")
     print("5. Sair")
+    print("6. Listar Feriados Públicos")
     return input("Escolha: ")
 
 def main() -> None:
@@ -135,6 +136,27 @@ def main() -> None:
                 print("❌ Entrada inválida. Digite um número.")
         elif choice == "5":
             break
+        elif choice == "6":
+            # Integração com API pública de feriados
+            from src.holidays_api import get_public_holidays
+            year_input = input("Ano (YYYY, vazio = ano atual): ")
+            country = input("Código do país (ISO 3166-1 alfa-2, ex: BR, US): ").upper() or 'BR'
+            try:
+                year = int(year_input) if year_input.strip() else datetime.now().year
+            except ValueError:
+                print("Ano inválido. Usando ano atual.")
+                year = datetime.now().year
+
+            try:
+                holidays = get_public_holidays(year, country)
+                if not holidays:
+                    print("Nenhum feriado encontrado ou código de país inválido.")
+                else:
+                    print(f"Feriados para {country} em {year}:")
+                    for h in holidays[:30]:
+                        print(f"- {h.get('date')} : {h.get('localName')} ({h.get('name')})")
+            except Exception as e:
+                print("Erro ao buscar feriados:", e)
         else:
             print("❌ Opção inválida. Tente novamente.")
 
